@@ -10,5 +10,7 @@
 * Writing to ports
     * remove `x86_64` crate
     * Custom IDT type
+    * Custom ISF type
+    * Custom TSS type
 * Serial (UART 16550) driver
     * remove `uart_16550` crate
