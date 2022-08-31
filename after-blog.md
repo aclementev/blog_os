@@ -9,5 +9,6 @@
     * Maybe it was an issue of not using `--bin blog_os`
 * Writing to ports
     * remove `x86_64` crate
+    * Custom IDT type
 * Serial (UART 16550) driver
     * remove `uart_16550` crate
