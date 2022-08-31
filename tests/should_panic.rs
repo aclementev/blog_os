@@ -10,8 +10,7 @@ pub extern "C" fn _start() -> ! {
     serial_println!("[test did not panic]");
     exit_qemu(QemuExitCode::Failed);
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    blog_os::hlt_loop();
 }
 
 fn should_fail() {
@@ -24,6 +23,5 @@ fn panic(_info: &PanicInfo) -> ! {
     serial_println!("[ok]");
     exit_qemu(QemuExitCode::Success);
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    blog_os::hlt_loop();
 }

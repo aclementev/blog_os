@@ -11,8 +11,7 @@ use core::panic::PanicInfo;
 pub extern "C" fn _start() -> ! {
     test_main();
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    blog_os::hlt_loop();
 }
 
 #[panic_handler]

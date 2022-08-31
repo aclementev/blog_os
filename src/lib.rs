@@ -5,19 +5,27 @@
 #![reexport_test_harness_main = "test_main"]
 #![feature(abi_x86_interrupt)]
 
+pub mod gdt;
 pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
-pub mod gdt;
 
 use core::panic::PanicInfo;
+
+const QEMU_EXIT_PORT: u16 = 0xf4;
 
 pub fn init() {
     gdt::init();
     interrupts::init_idt();
+    unsafe { interrupts::PICS.lock().initialize() };
+    x86_64::instructions::interrupts::enable();
 }
 
-const QEMU_EXIT_PORT: u16 = 0xf4;
+pub fn hlt_loop() -> ! {
+    loop {
+        x86_64::instructions::hlt();
+    }
+}
 
 pub trait Testable {
     fn run(&self);
@@ -65,8 +73,7 @@ pub fn test_panic_handler(info: &PanicInfo) -> ! {
     serial_println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    hlt_loop();
 }
 
 /// Entry point for `cargo test`
@@ -77,8 +84,7 @@ pub extern "C" fn _start() -> ! {
 
     test_main();
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    hlt_loop();
 }
 
 #[cfg(test)]

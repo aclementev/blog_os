@@ -18,15 +18,14 @@ pub extern "C" fn _start() -> ! {
 
     println!("It did not crash!");
 
-    #[allow(clippy::empty_loop)]
-    loop {}
+    blog_os::hlt_loop();
 }
 
 #[cfg(not(test))]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     println!("{info}");
-    loop {}
+    blog_os::hlt_loop();
 }
 
 #[cfg(test)]
