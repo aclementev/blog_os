@@ -21,3 +21,9 @@
 * USB support
 * Custom keyboard scancodes parsing
     * remove `pc-keyboard` crate
+* Custom page table interaction implementation
+    * Do not use `x86_64`
+    * Implement also TLB handling
+* Custom bootloader
+    * Implement initial memory paging setup
+        * remove `bootloader` crate
