@@ -4,17 +4,26 @@
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 #![feature(abi_x86_interrupt)]
+#![feature(alloc_error_handler)]
 
+extern crate alloc;
+
+pub mod allocator;
 pub mod gdt;
 pub mod interrupts;
+pub mod memory;
 pub mod serial;
 pub mod vga_buffer;
-pub mod memory;
 
 use core::panic::PanicInfo;
 
 #[cfg(test)]
 use bootloader::{entry_point, BootInfo};
+
+#[alloc_error_handler]
+fn alloc_error_handler(layout: alloc::alloc::Layout) -> ! {
+    panic!("allocation error: {layout:?}")
+}
 
 const QEMU_EXIT_PORT: u16 = 0xf4;
 
